@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 from app.services.prediction import predict_next_day_price
 
-router = APIRouter()
+router = APIRouter(prefix="/predicts", tags=["Prediction"])
 
-@router.get("/predict/{symbol}")
+@router.get("/{symbol}")
 def predict(symbol: str):
-    return predict_next_day_price(symbol)
+    prediction = predict_next_day_price(symbol)
+    return {"symbol": symbol, "prediction": prediction}

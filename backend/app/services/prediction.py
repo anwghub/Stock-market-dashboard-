@@ -7,25 +7,40 @@ from fastapi import HTTPException
 
 def predict_next_day_price(symbol: str):
     df = yf.download(symbol, period="1y", interval="1d", progress=False)
+    
+    # Handle empty or invalid data
     if df.empty or len(df) < 20:
-        raise HTTPException(status_code=404, detail="Not enough data")
-    df = df.dropna(subset=['Close'])
+        raise HTTPException(status_code=404, detail=f"No valid data for {symbol}")
+
+    # Handle MultiIndex from yfinance (in case of extra info like currency)
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = [col[0] for col in df.columns]  # Flatten multi-index
+
+    # If "Close" missing, use "Adj Close"
+    if "Close" not in df.columns:
+        if "Adj Close" in df.columns:
+            df["Close"] = df["Adj Close"]
+        else:
+            raise HTTPException(status_code=404, detail=f"'Close' column not found for {symbol}")
+
+    df = df.dropna(subset=["Close"])
 
     # Create lag features
     for lag in range(1, 6):
-        df[f"lag_{lag}"] = df['Close'].shift(lag)
+        df[f"lag_{lag}"] = df["Close"].shift(lag)
     df = df.dropna()
 
     if df.shape[0] < 10:
         raise HTTPException(status_code=400, detail="Not enough rows after lagging")
 
+    # Prepare features
     X = df[[f"lag_{i}" for i in range(1, 6)]].values
-    y = df['Close'].values
+    y = df["Close"].values
 
     model = RandomForestRegressor(n_estimators=100, random_state=0)
     model.fit(X, y)
 
-    closes = df['Close'].values
+    closes = df["Close"].values
     x_pred = closes[-5:][::-1]
     pred = float(model.predict([x_pred])[0])
 
