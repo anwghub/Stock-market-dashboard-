@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+
 export default function LandingPage() {
   const nav = useNavigate();
   return (
@@ -10,7 +11,7 @@ export default function LandingPage() {
         <p className="text-center mb-8">Get the details for your everyday stock market</p>
         <div className="flex justify-center">
           <button
-            // onClick={() => nav('/dashboard')}
+            onClick={() => nav('/dashboard')}
             className="btn btn-primary btn-lg px-8"
           >
             Get started

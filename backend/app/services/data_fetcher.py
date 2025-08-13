@@ -1,18 +1,23 @@
 import yfinance as yf
-from typing import List, Dict
-from app.utils.helpers import df_to_records  # correct import
+import pandas as pd
 
-def fetch_stock_data(symbol: str, period: str = "6mo", interval: str = "1d") -> List[Dict]:
-    """
-    Fetch historical stock data from Yahoo Finance.
-    Returns a JSON-safe list of dictionaries.
-    """
-    try:
-        df = yf.download(symbol, period=period, interval=interval, progress=False)
-        if df.empty:
-            return []
-        # Ensure df_to_records returns list of dicts
-        return df_to_records(df)
-    except Exception as e:
-        print(f"Error fetching stock data for {symbol}: {e}")
+def fetch_stock_data(symbol, period="6mo", interval="1d"):
+    ticker = yf.Ticker(symbol)
+    df = ticker.history(period=period, interval=interval)
+
+    if df.empty:
         return []
+
+    # Fill Close from Adj Close if needed
+    if "Close" not in df.columns or df["Close"].isna().all():
+        df["Close"] = df.get("Adj Close", None)
+
+    # Build list of dictionaries (JSON-friendly)
+    records = []
+    for date, row in df.iterrows():
+        records.append({
+            "date": date.strftime("%Y-%m-%d"),
+            "close": float(row["Close"]) if pd.notna(row["Close"]) else None
+        })
+
+    return records

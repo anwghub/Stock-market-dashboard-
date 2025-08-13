@@ -1,56 +1,72 @@
-// import React, { useEffect, useState } from "react";
-// import Sidebar from "../components/Sidebar";
-// import StockChart from "../components/StockChart";
-// import BotButton from "../components/BotButton";
-// import { getCompanies, getStockData } from "../services/stockService";
+import React, { useEffect, useState } from "react";
+import { getCompanies, getStockData } from "../service/stockServices";
+import StockChart from "../components/StockChart";
+import Sidebar from "../components/Sidebar";
+import BotButton from '../components/BotButton';
 
-// export default function Dashboard() {
-//   const [companies, setCompanies] = useState([]);
-//   const [selected, setSelected] = useState(null);
-//   const [stockPayload, setStockPayload] = useState({ data: [] });
-//   const [loading, setLoading] = useState(false);
+export default function Dashboard() {
+    const [companies, setCompanies] = useState([]);
+    const [selectedSymbol, setSelectedSymbol] = useState("");
+    const [stockData, setStockData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-//   useEffect(() => {
-//     getCompanies().then((data) => {
-//       setCompanies(data);
-//       if (data.length) setSelected(data[0].symbol);
-//     });
-//   }, []);
+    // Fetch company list on mount
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await getCompanies();
+                setCompanies(data);
+                if (data.length > 0) {
+                    setSelectedSymbol(data[0].symbol); // auto select first company
+                }
+            } catch (err) {
+                console.error("Error fetching companies:", err);
+            }
+        })();
+    }, []);
 
-//   useEffect(() => {
-//     if (!selected) return;
-//     setLoading(true);
-//     getStockData(selected, "6mo", "1d")
-//       .then((res) => setStockPayload(res))
-//       .catch((err) => console.error(err))
-//       .finally(() => setLoading(false));
-//   }, [selected]);
+    // Fetch stock data when symbol changes
+    useEffect(() => {
+        if (!selectedSymbol) return;
+        setLoading(true);
+        (async () => {
+            try {
+                const data = await getStockData(selectedSymbol, "1mo", "1d");
+                setStockData(data);
+            } catch (err) {
+                console.error("Error fetching stock data:", err);
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, [selectedSymbol]);
 
-//   return (
-//     <div className="min-h-screen bg-base-200">
-//       <div className="flex">
-//         <aside className="w-72 bg-purple-900 text-white">
-//           <Sidebar companies={companies} selectedSymbol={selected} onSelect={setSelected} />
-//         </aside>
+    return (
+        <div className="flex min-h-screen bg-gray-100">
+            {/* Sidebar */}
+            <div className="w-64 bg-white shadow-md">
+                <Sidebar
+                    companies={companies}
+                    selectedSymbol={selectedSymbol}
+                    onSelect={setSelectedSymbol}
+                />
+            </div>
 
-//         <main className="flex-1 p-6">
-//           <div className="bg-white rounded-xl shadow p-4">
-//             {loading ? (
-//               <div className="py-20 text-center">Loading...</div>
-//             ) : (
-//               <>
-//                 <div className="mb-4">
-//                   <h2 className="text-xl font-bold">{selected}</h2>
-//                   <div className="text-sm opacity-70">Showing recent daily closes</div>
-//                 </div>
-//                 <StockChart data={stockPayload.data} symbol={selected} />
-//               </>
-//             )}
-//           </div>
-//         </main>
-//       </div>
-
-//       <BotButton symbol={selected} />
-//     </div>
-//   );
-// }
+            {/* Main Content */}
+            <div className="flex-1 p-6">
+                <h1 className="text-3xl font-bold mb-4">Stock Dashboard</h1>
+                <div className="bg-white p-4 rounded-lg shadow">
+                    {loading ? (
+                        <p>Loading chart...</p>
+                    ) : stockData ? (
+                        <StockChart stockData={stockData} />
+                    ) : (
+                        <p>No stock data available</p>
+                    )}
+                </div>
+            </div>
+            {/* Bot Button */}
+            {selectedSymbol && <BotButton symbol={selectedSymbol} />}
+        </div>
+    );
+}

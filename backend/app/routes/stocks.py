@@ -8,4 +8,8 @@ def get_stock(symbol: str, period: str = "6mo", interval: str = "1d"):
     records = fetch_stock_data(symbol, period, interval)
     if not records:
         raise HTTPException(status_code=404, detail=f"No data for {symbol}")
-    return {"symbol": symbol, "data": records}
+    
+    return {  # keys are strings, data is a list of dicts
+        "symbol": symbol,
+        "data": records
+    }
