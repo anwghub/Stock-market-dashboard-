@@ -13,6 +13,6 @@ export const getStockData = async (symbol, period = "6mo", interval = "1d") => {
 };
 
 export const getPrediction = async (symbol) => {
-  const res = await axios.get(`${BACKEND}/predict/${encodeURIComponent(symbol)}`);
+  const res = await axios.get(`${BACKEND}/predicts/${encodeURIComponent(symbol)}`);
   return res.data;
 };

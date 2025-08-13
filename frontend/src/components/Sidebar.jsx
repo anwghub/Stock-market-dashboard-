@@ -10,7 +10,7 @@ export default function Sidebar({ companies = [], selectedSymbol, onSelect }) {
             <button
               onClick={() => onSelect(c.symbol)}
               className={`w-full text-left px-3 py-3 rounded-md transition-colors duration-150 flex items-center justify-between ${
-                selectedSymbol === c.symbol ? 'bg-primary text-white' : 'bg-transparent hover:bg-base-100'
+                selectedSymbol === c.symbol ? 'bg-primary text-cyan' : 'bg-transparent hover:bg-base-100'
               }`}
             >
               <div>

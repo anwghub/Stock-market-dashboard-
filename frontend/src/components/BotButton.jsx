@@ -7,10 +7,10 @@ export default function BotButton({ symbol }) {
   return (
     <button
     onClick={() => navigate(`/prediction/${encodeURIComponent(symbol || '')}`)}
-      className="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-lg bg-white flex items-center justify-center"
+      className="fixed bottom-16 right-16 w-28 h-28 rounded-full shadow-lg bg-white flex items-center justify-center"
       title="Open prediction bot"
     >
-      <img src={botImage} alt="bot" className="w-10 h-10" />
+      <img src={botImage} alt="bot" className="w-12 h-12" />
     </button>
   );
 }

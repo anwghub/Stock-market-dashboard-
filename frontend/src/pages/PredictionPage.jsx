@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getStockData, getPrediction } from "../service/stockServices.js";
-import StockChart from "../components/StockChart.jsx";
+import PredictedChart from "../components/PredictedChart.jsx";
 
 export default function PredictionPage() {
   const { symbol } = useParams();
@@ -13,8 +13,8 @@ export default function PredictionPage() {
     if (!symbol) return;
     Promise.all([getStockData(symbol, "6mo", "1d"), getPrediction(symbol)])
       .then(([stockRes, predRes]) => {
-        setHistory(stockRes.data);
-        setPrediction(predRes.prediction); // ✅ Fix here
+        setHistory(stockRes.data.data || []); 
+        setPrediction(predRes.prediction || null); 
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
@@ -39,11 +39,9 @@ export default function PredictionPage() {
                 <strong>{prediction?.predicted_close}</strong>
               </div>
             </div>
-            <StockChart
-              data={history}
-              symbol={symbol}
-              predictionObj={prediction}
-            />
+
+            <PredictedChart history={history} prediction={prediction} />
+
             <div className="mt-4 text-sm text-gray-600">
               <strong>Model notes:</strong> {prediction?.notes}
             </div>
