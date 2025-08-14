@@ -9,6 +9,7 @@ export default function Dashboard() {
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [stockData, setStockData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Fetch company list on mount
   useEffect(() => {
@@ -43,8 +44,9 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen pt-[88px] bg-gradient-to-b from-blue-500 via-purple-500 to-purple-900 overflow-hidden">
-      {/* Sidebar */}
-      <div className="w-64 bg-gradient-to-b from-zinc-900 to-purple-1000 shadow-md overflow-y-auto">
+
+      {/* Sidebar - Desktop */}
+      <div className="hidden md:block w-64 bg-gradient-to-b from-zinc-900 to-purple-1000 shadow-md overflow-y-auto">
         <Sidebar
           companies={companies}
           selectedSymbol={selectedSymbol}
@@ -52,10 +54,30 @@ export default function Dashboard() {
         />
       </div>
 
+      {/* Mobile Sidebar */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden" onClick={() => setSidebarOpen(false)}>
+          <div
+            className="absolute top-0 left-0 w-64 h-full bg-gradient-to-b from-zinc-900 to-purple-1000 shadow-md overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Sidebar
+              companies={companies}
+              selectedSymbol={selectedSymbol}
+              onSelect={(symbol) => {
+                setSelectedSymbol(symbol);
+                setSidebarOpen(false);
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
       {/* Main Content */}
       <div className="flex-1 flex flex-col p-6 overflow-hidden">
         <h1 className="text-3xl font-bold mb-6">Stock Dashboard</h1>
-        <div className="flex-1 bg-white p-4 rounded-lg shadow overflow-hidden pl-5 ml-20 pr-5 mr-28">
+        <div className="flex-1 bg-white p-4 rounded-lg shadow overflow-hidden">
           {loading ? (
             <p>Loading chart...</p>
           ) : stockData ? (
@@ -65,6 +87,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+
 
       {/* Bot Button */}
       {selectedSymbol && <BotButton symbol={selectedSymbol} />}
