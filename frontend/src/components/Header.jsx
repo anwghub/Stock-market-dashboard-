@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import StockFlow from "../assets/StockFlow_logo.png";
+import StockFlow from "../assets/logo.png";
 
 export default function Header() {
   const [theme, setTheme] = useState("cupcake");
