@@ -8,7 +8,8 @@ import {
   LineElement,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  Filler
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 
@@ -19,8 +20,11 @@ ChartJS.register(
   LineElement,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  Filler
 );
+
+
 
 export default function StockChart({ stockData }) {
   const chartData = useMemo(() => {
@@ -32,8 +36,8 @@ export default function StockChart({ stockData }) {
         {
           label: stockData.symbol,
           data: stockData.data.map(item => Number(item.close)), // ✅ Ensure number
-          borderColor: "rgb(75, 192, 192)",
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgb(123, 31, 162)",
+          backgroundColor: "rgba(221, 214, 254, 0.5)",
           fill: true,
           tension: 0.3
         }
@@ -54,5 +58,5 @@ export default function StockChart({ stockData }) {
 
   if (!chartData) return <p>Loading chart...</p>;
 
-  return <Line data={chartData} options={options} />;
+  return (<Line data={chartData} options={options} className="pl-20" />);
 }

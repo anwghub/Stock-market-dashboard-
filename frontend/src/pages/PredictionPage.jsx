@@ -21,9 +21,9 @@ export default function PredictionPage() {
   }, [symbol]);
 
   return (
-    <div className="min-h-screen bg-base-200 p-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-center text-2xl font-bold mb-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-500 via-purple-500 to-purple-900 p-6 pt-[150px]">
+      <div className="max-w-6xl mx-auto w-[900px]">
+        <h2 className="text-center text-2xl font-bold mb-7">
           Next Day Prediction — {symbol}
         </h2>
         {loading ? (
@@ -31,10 +31,10 @@ export default function PredictionPage() {
         ) : (
           <div className="bg-white rounded-xl shadow p-4">
             <div className="mb-4">
-              <div>
+              <div className="text-slate-800 text-lg">
                 Last Close: <strong>{prediction?.last_close}</strong>
               </div>
-              <div>
+              <div className="text-slate-800 text-lg">
                 Predicted ({prediction?.predicted_date}):{" "}
                 <strong>{prediction?.predicted_close}</strong>
               </div>
@@ -42,7 +42,7 @@ export default function PredictionPage() {
 
             <PredictedChart history={history} prediction={prediction} />
 
-            <div className="mt-4 text-sm text-gray-600">
+            <div className="mt-4 text-md text-gray-600">
               <strong>Model notes:</strong> {prediction?.notes}
             </div>
           </div>

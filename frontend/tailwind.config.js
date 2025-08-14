@@ -1,10 +1,14 @@
-import daisyui from "./node_modules/daisyui";
+// tailwind.config.js
+import daisyui from "daisyui"; 
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
-  theme: { extend: {} },
+  theme: {
+    extend: {},
+  },
   plugins: [daisyui],
   daisyui: {
-    themes: ["light", "dark", "cupcake"],
+    themes: ["cupcake", "coffee"], 
   },
 };

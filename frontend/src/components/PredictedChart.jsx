@@ -40,8 +40,8 @@ export default function PredictedChart({ prediction }) {
         {
           label: "Price Prediction",
           data: values,
-          borderColor: "rgba(255, 99, 132, 1)",
-          backgroundColor: "rgba(255, 99, 132, 0.2)",
+          borderColor: "rgba(91, 33, 182, 1)",
+          backgroundColor: "rgba(91, 33, 182, 0.3)",
           fill: false,
           tension: 0.1,
           pointRadius: 8,
@@ -65,7 +65,7 @@ export default function PredictedChart({ prediction }) {
   };
 
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-[400px] pl-16 pb-6">
       <Line data={chartData} options={options} />
     </div>
   );
