@@ -6,13 +6,13 @@ import Dashboard from "./pages/Dashboard";
 import PredictionPage from "./pages/PredictionPage";
 
 function App() {
-  // useEffect(() => {
-  //   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  //   document.documentElement.setAttribute(
-  //     "data-theme",
-  //     prefersDark ? "coffee" : "cupcake"
-  //   );
-  // }, []);
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute(
+      "data-theme",
+      prefersDark ? "coffee" : "cupcake"
+    );
+  }, []);
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
       <Header />
