@@ -74,7 +74,6 @@ export default function Dashboard() {
       )}
 
       {/* Main Content */}
-      {/* Main Content */}
       <div className="flex-1 flex flex-col p-6 overflow-hidden">
         <h1 className="text-3xl font-bold mb-6">Stock Dashboard</h1>
         <div className="flex-1 bg-white p-4 rounded-lg shadow overflow-hidden">

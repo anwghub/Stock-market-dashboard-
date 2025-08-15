@@ -9,7 +9,7 @@ export const getCompanies = async () => {
 
 export const getStockData = async (symbol, period = "6mo", interval = "1d") => {
   const res = await axios.get(`${BACKEND}/stocks/${encodeURIComponent(symbol)}?period=${period}&interval=${interval}`);
-  return res.data; // { symbol, data: [...] }
+  return res.data; 
 };
 
 export const getPrediction = async (symbol) => {

@@ -7,7 +7,7 @@ app = FastAPI(title="Stock API for Dashboard")
 # CORS setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For production, change to your frontend URL
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
