@@ -3,6 +3,8 @@
 ### Live Demo
 Check out the live version of StockFlow [here](https://stock-flow-final.vercel.app).
 
+### Screenshot
+![image alt](https://github.com/anwghub/StockFlow/blob/0434c5511cb2aab1644105ef9c756f581bae0993/screenshots.jpg)
 
 ### Development Approach
 I followed a **modular and iterative approach** for building the StockFlow application. The project was divided into independent modules:  
@@ -36,3 +38,4 @@ I tested and refined each iteration before moving on to the next, which helped k
 
 
 **Note**: The prices shown are in the currency used by the stock’s main exchange. This could be USD, INR, EUR, or something else, depending on the stock. If you need to know the exact currency, you can get it from the ticker’s metadata in yfinance.
+
